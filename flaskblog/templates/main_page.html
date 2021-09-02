@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class = "content-section">
+    <form method = "POST" action = "">
+        {{ form.hidden_tag()}}
+        <fieldset class = "form-group">
+            <legend class = "border-bottom mb-4">Input detail pemantauan Issue</legend>
+           
+            <!-- Query -->
+            <div class = "form-group">
+                {{ form.query.label(class="form-control-label")}}
+                {% if form.query.errors %}
+                    {{ form.query(class="form-control form-control-lg is-invalid")}}   
+                    <div class = "invalid-feedback">
+                        {% for error in form.query.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                     {{ form.query(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+
+            <!-- fromdate -->
+            <div class = "form-group">
+                {{ form.fromdate.label(class="form-control-label")}}
+                {% if form.fromdate.errors %}
+                    {{ form.fromdate(class="form-control form-control-lg is-invalid")}}   
+                    <div class = "invalid-feedback">
+                        {% for error in form.fromdate.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                     {{ form.fromdate(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+           
+            <!-- todate -->
+            <div class = "form-group">
+                {{ form.todate.label(class="form-control-label")}}
+                {% if form.todate.errors %}
+                    {{ form.todate(class="form-control form-control-lg is-invalid")}}   
+                    <div class = "invalid-feedback">
+                        {% for error in form.todate.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>       
+                {% else %}
+                     {{ form.todate(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+        </fieldset>
+        <!-- Submit Button -->
+        <div class = "form-group">
+            {{form.submit_query(class = "btn btn-outline-info")}}
+        </div>
+        
+    </form>
+   
+</div>
+    
+{% endblock %}
+
+
