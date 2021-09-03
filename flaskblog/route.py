@@ -4,6 +4,11 @@ from flaskblog.forms import RegistrationForm, LoginForm, IssueKeywordForm, Gejal
 from flaskblog.models import User, ContactHistory, Symptoms
 from flask_login import login_user, logout_user, current_user, login_required
 import requests as req
+import json
+import os
+import pickle
+
+from get_data import convert_tweets
 
 #MAIN LOGIN PAGE
 @app.route('/')
@@ -27,37 +32,57 @@ def main_page():
     form = IssueKeywordForm()
     #Save submitted file
     if form.validate_on_submit():
-        query   = request.form['query']
-        fromdate= request.form['fromdate']
-        todate  = request.form['todate']
-        result_dict =   {'query':query, 'fromdate':fromdate, 'todate':todate}
-        #Kirim dict hasil result ke /result
-        req.post('http://127.0.0.1:5000/result', params=result_dict)
-        #Redirect to /result
-        return redirect(url_for('result'))
+        query           = request.form['query']
+        fromdate        = request.form['fromdate']
+        todate          = request.form['todate']
+        result_dict     = {'query':query, 'fromDate':fromdate, 'toDate':todate}
+        #Convert to specified json format
+        result_dict    = convert_tweets(result_dict)
+        result_dict    = json.dumps(result_dict)
+        #Save cookie and redirect to /show_result
+        response = redirect(url_for('show_result'))
+        response.set_cookie('YourSessionCookie', result_dict)
+        return response
+
     return render_template('main_page.html', title = 'Cek resiko infeksi online', form = form)
 
 
-@app.route('/result', methods = ['GET','POST'])
+@app.route('/result', methods = ['POST'])
 def result():
-    if request.method == 'POST':
-        json     =   request.get_json()
-        return json
-    if request.methods == 'GET':
-        return 'hehe'
+
+    #Jsonify body post
+    json     =   request.get_json()
+    return convert_tweets(json)
 
 
-@app.route('/register', methods = ['GET','POST'])
-def register():
-   form = RegistrationForm()
-   if form.validate_on_submit(): 
-       hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-       user = User(ktp = form.ktp.data, nama = form.nama.data, jenis_kelamin = form.jenis_kelamin.data, alamat = form.alamat.data, email = form.email.data, nomor_hp = form.nomor_hp.data, umur = form.umur.data, password = hashed_password)
-       db.session.add(user)
-       db.session.commit()
-       flash(f'Akun berhasil terdaftar untuk {form.nama.data}', 'success')
-       return redirect(url_for('login'))
-   return render_template('pendaftaran.html', title = 'Halaman Pendaftaran', form = form)
+@app.route('/show_result', methods = ['GET'])
+def show_result():
+
+    result = request.cookies.get('YourSessionCookie')
+    result = json.loads(result)
+
+    #print(os.getcwd())
+    #with open('./flaskblog/static/dummy.pickle','rb') as f:
+    #    result = pickle.load(f)
+    
+
+    return render_template('result_page.html', title = 'Halaman Hasil', result=result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/profile')
 @login_required

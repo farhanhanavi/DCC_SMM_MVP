@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 style="margin-bottom:50px;">RESULT</h1>
+
+{% for i in range(10) %}
+<article class="article_tweet">
+   
+    
+    <div class='top_text'>
+        <p class='screen_name'><b>{{result.screen_name[i-1]}}</b></p>
+    </div>
+        <p class='tweet_date'>{{result.tweet_date[i-1]}}</p>
+    
+    <p class='tweet'>{{result.tweet[i-1]}}</p>
+
+    <div class='tweet_stat'>
+        <img src="../static/reply_png.png" width=28px height=25px>
+        <p class='reply_count'>{{result.tweet_reply_count[i-1]}}</p>
+        <img src="../static/retweet_png.png" width=28px height=25px>
+        <p class='retweet_count'>{{result.tweet_retweet_count[i-1]}}</p>
+        <img src="../static/love_png.png" width=28px height=25px>
+        <p class='favorite_count'>{{result.tweet_favorite_count[i-1]}}</p>
+    </div>
+        
+    <!-- insight nama -->
+    <br>
+    <div class="insight_nama">
+        {% if result.insight[i-1].nama|length > 0 %}
+            <b>List of name : </b>
+            {% for name in result.insight[i-1].nama %}
+                <strong>{{ name + ','}}</strong>
+            {% endfor %}
+        {% else %}
+            <b>No name detected! </b>
+        {% endif %}
+    </div>
+
+    <!-- insight organisasi -->
+    <div class="insight_organisasi">
+        {% if result.insight[i-1].organisasi|length > 0 %}
+            <b>List of organisasi : </b>
+            {% for organisasi in result.insight[i-1].organisasi %}
+                <strong>{{ organisasi + ','}}</strong>
+            {% endfor %}
+        {% else %}
+            <b>No organisasi detected! </b>
+        {% endif %}
+    </div>
+
+    <!-- insight organisasi -->
+    <div class="insight_keyword">
+        {% if result.insight[i-1].insight_keyword|length > 0 %}
+            <b>List of keyword : </b>
+            {% for keyword in result.insight[i-1].insight_keyword %}
+                <strong>{{ keyword + ','}}</strong>
+            {% endfor %}
+        {% else %}
+            <b>No keyword detected! </b>
+        {% endif %}
+    </div>
+
+
+
+    <a href="https://twitter.com/{{result.screen_name[i-1]}}/status/{{result.tweet_id[i-1] }}" target='_blank'>Check Tweet</a>
+    
+</article>
+{% endfor %}
+
+{% endblock %}
+
+
