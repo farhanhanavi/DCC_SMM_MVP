@@ -94,7 +94,7 @@ def real_time(list_of_strings):
     for string in list_of_strings:
         
         #Container
-        insight_dict = {'nama':[], 'organisasi':[], 'insight_keyword':[]}
+        insight_dict = {'nama':[], 'organisasi':[], 'insight_keyword':[], 'sentiment':[]}
         
         #PARAMS
         params = {
@@ -113,6 +113,8 @@ def real_time(list_of_strings):
                 insight_dict[i['path'][1]].append(i['keyword'])
             elif (i['path'][0] == '_word' and i['path'][1] == 'adj'):
                 insight_dict['insight_keyword'].append(i['keyword'])
+            elif (i['path'][0] == '$view'):
+                insight_dict['sentiment'].append(i['keyword'])
             
         all_result.append(insight_dict)
 

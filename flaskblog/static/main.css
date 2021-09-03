@@ -122,3 +122,20 @@ body {
   .insight_nama {
     display:inline-block;
   }
+
+  .insight_sentiment{
+    color:black
+  }
+
+  .insight_sentiment b.sentiment_neutral{
+    color:gray
+  }
+
+  .insight_sentiment b.sentiment_pos{
+    color:green
+  }
+
+  
+  .insight_sentiment b.sentiment_neg{
+    color:green
+  }

@@ -60,6 +60,25 @@
         {% endif %}
     </div>
 
+    <!-- insight sentiment -->
+    <div class="insight_sentiment">
+        {% if result.insight[i-1].sentiment|length > 1 %}
+            <b class="sentiment_neutral">Sentiment : Ambivalent }}</b>
+   
+        {% elif result.insight[i-1].sentiment|length == 0 %}
+        <b class='sentiment_neutral'>Sentiment : Neutral</b>
+   
+        {% else %}
+
+            {% if result.insight[i-1].sentiment[0] == '_positive' %}
+            <b class="sentiment_pos">Sentiment : Positive </b>
+            {% elif result.insight[i-1].sentiment[0] == '_negative' %}
+            <b class="sentiment_neg">Sentiment : Negative </b>
+            {% endif %}
+    
+        {% endif %}
+    </div>
+
 
 
     <a href="https://twitter.com/{{result.screen_name[i-1]}}/status/{{result.tweet_id[i-1] }}" target='_blank'>Check Tweet</a>
